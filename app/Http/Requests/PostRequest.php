@@ -4,6 +4,7 @@ namespace Spa\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Annotations as OA;
+use Spa\Repositories\Posts;
 
 /**
  * @OA\Response(

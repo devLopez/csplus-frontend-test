@@ -21,4 +21,37 @@ use OpenApi\Annotations as OA;
  *     scheme="bearer",
  *     bearerFormat="JWT"
  * )
+ *
+ * @OA\Response(
+ *     response="Forbidden",
+ *     description="Forbidden access",
+ *     @OA\JsonContent(
+ *          @OA\Property(property="meta", description="Response Metadata",
+ *              @OA\Property(property="code", description="Http response code", example="401"),
+ *              @OA\Property(property="message", description="Mensagem de erro", example="Você não tem permissão. Tente novamente")
+ *          )
+ *     )
+ * )
+ *
+ * @OA\Response(
+ *     response="NotFound",
+ *     description="Os dados solicitados não foram encontrads",
+ *     @OA\JsonContent(
+ *          @OA\Property(property="meta", description="Response Metadata",
+ *              @OA\Property(property="code", description="Http response code", example="404"),
+ *              @OA\Property(property="message", description="Mensagem de erro", example="Recurso não encontrado")
+ *          )
+ *     )
+ * )
+ *
+ * @OA\Response(
+ *     response="Error",
+ *     description="Unexpected Error",
+ *     @OA\JsonContent(
+ *          @OA\Property(property="meta", description="Response Metadata",
+ *              @OA\Property(property="code", description="Http response code", example="500"),
+ *              @OA\Property(property="message", description="Mensagem de erro", example="Aconteceu um erro, tente novamente")
+ *          )
+ *     )
+ * )
  */

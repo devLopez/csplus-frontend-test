@@ -98,6 +98,60 @@ paths:
                 type: object
       security:
         - bearer
+  '/api/v1/posts/{post}':
+    get:
+      tags:
+        - posts
+      description: 'Salva um novo post no banco de dados'
+      operationId: 'Spa\Http\Controllers\Api\V1\PostsController::show'
+      parameters:
+        -
+          name: post
+          in: path
+          description: 'O código do post a ser buscado'
+      responses:
+        '200':
+          description: 'Response Ok'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { description: 'Response data', properties: { post: { description: 'o post encontrado', $ref: '#/components/schemas/Post' } }, type: object }
+                type: object
+        '404':
+          $ref: '#components/responses/NotFound'
+        '500':
+          $ref: '#components/responses/Error'
+      security:
+        - bearer
+    put:
+      tags:
+        - posts
+      description: 'Atualiza um post salvo no banco de dados'
+      operationId: 'Spa\Http\Controllers\Api\V1\PostsController::update'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '403':
+          $ref: '#components/responses/Forbidden'
+        '422':
+          $ref: '#components/responses/ErrorValidationResponse'
+        '500':
+          $ref: '#components/responses/Error'
+        '201':
+          description: 'Post Criado'
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta: { description: 'Response metada', properties: { code: { description: 'Http response code', example: '201' }, message: { description: 'A resposta da requisição', example: 'O post foi criado' } }, type: object }
+                  data: { description: 'Response data', properties: { post: { description: 'O post foi atualizado', $ref: '#/components/schemas/Post' } }, type: object }
+                type: object
+      security:
+        - bearer
 components:
   schemas:
     ErrorResponse:
@@ -147,6 +201,45 @@ components:
           format: dateTime
       type: object
   responses:
+    Forbidden:
+      description: 'Forbidden access'
+      content:
+        application/json:
+          schema:
+            properties:
+              meta:
+                description: 'Response Metadata'
+                properties:
+                  code: { description: 'Http response code', example: '401' }
+                  message: { description: 'Mensagem de erro', example: 'Você não tem permissão. Tente novamente' }
+                type: object
+            type: object
+    NotFound:
+      description: 'Os dados solicitados não foram encontrads'
+      content:
+        application/json:
+          schema:
+            properties:
+              meta:
+                description: 'Response Metadata'
+                properties:
+                  code: { description: 'Http response code', example: '404' }
+                  message: { description: 'Mensagem de erro', example: 'Recurso não encontrado' }
+                type: object
+            type: object
+    Error:
+      description: 'Unexpected Error'
+      content:
+        application/json:
+          schema:
+            properties:
+              meta:
+                description: 'Response Metadata'
+                properties:
+                  code: { description: 'Http response code', example: '500' }
+                  message: { description: 'Mensagem de erro', example: 'Aconteceu um erro, tente novamente' }
+                type: object
+            type: object
     ErrorValidationResponse:
       description: 'Define a response contendo os dados de validação de formulários'
       content:
