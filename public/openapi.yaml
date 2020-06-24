@@ -56,6 +56,23 @@ paths:
           description: 'Response Ok'
       security:
         - bearer
+  /api/v1/posts:
+    get:
+      tags:
+        - posts
+      description: 'Retorna os posts cadastroados para o associado'
+      operationId: 'Spa\Http\Controllers\Api\V1\PostsController::index'
+      responses:
+        '200':
+          description: 'Response Ok'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { description: 'Response data', properties: { posts: { items: { $ref: '#/components/schemas/Post' } } }, type: object }
+                type: object
+      security:
+        - bearer
 components:
   schemas:
     ErrorResponse:
@@ -71,6 +88,34 @@ components:
               description: 'Mensagem de erro a ser exbida ao usuário'
               type: string
           type: object
+      type: object
+    Post:
+      description: 'Define um post salvo no banco de dados'
+      properties:
+        id:
+          description: 'Post ID'
+          type: integer
+        title:
+          description: 'Título do post'
+          type: string
+        text:
+          description: 'Conteúdo do post'
+          type: string
+        user_id:
+          description: 'ID do usuário dono do post'
+          type: integer
+        publish_at:
+          description: 'A data de publicação do post'
+          type: string
+          format: dateTime
+        created_at:
+          description: 'A data de criação do post'
+          type: string
+          format: dateTime
+        updated_at:
+          description: 'A data de atualização do post'
+          type: string
+          format: dateTime
       type: object
   securitySchemes:
     bearer:

@@ -4,6 +4,7 @@ namespace Spa\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use OpenApi\Annotations as OA;
 
 /**
  * Post
@@ -30,6 +31,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\Spa\Models\Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Spa\Models\Post whereUserId($value)
  * @mixin \Eloquent
+ *
+ * @OA\Schema(
+ *     schema="Post",
+ *     description="Define um post salvo no banco de dados",
+ *     @OA\Property(property="id", type="integer", description="Post ID"),
+ *     @OA\Property(property="title", type="string", description="Título do post"),
+ *     @OA\Property(property="text", type="string", description="Conteúdo do post"),
+ *     @OA\Property(property="user_id", type="integer", description="ID do usuário dono do post"),
+ *     @OA\Property(property="publish_at", type="string", format="dateTime", description="A data de publicação do post"),
+ *     @OA\Property(property="created_at", type="string", format="dateTime", description="A data de criação do post"),
+ *     @OA\Property(property="updated_at", type="string", format="dateTime", description="A data de atualização do post"),
+ * )
  */
 class Post extends Model
 {

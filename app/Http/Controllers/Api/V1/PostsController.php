@@ -2,9 +2,10 @@
 
 namespace Spa\Http\Controllers\Api\V1;
 
-use Auth;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use Spa\Http\Controllers\Controller;
+use Spa\Http\Requests\PostRequest;
 use Spa\Repositories\Posts;
 
 /**
@@ -27,6 +28,19 @@ class PostsController extends Controller
         $this->posts = $posts;
     }
 
+    /**
+     * @OA\Get(
+     *     tags={"posts"},
+     *     path="/api/v1/posts",
+     *     description="Retorna os posts cadastroados para o associado",
+     *     security={"bearer"},
+     *     @OA\Response(response="200", description="Response Ok", @OA\JsonContent(
+     *          @OA\Property(property="data", description="Response data",
+     *              @OA\Property(property="posts", @OA\Items(ref="#/components/schemas/Post"))
+     *          )
+     *     ))
+     * )
+     */
     public function index()
     {
         $user = auth()->user();
@@ -42,7 +56,7 @@ class PostsController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         //
     }
