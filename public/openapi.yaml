@@ -73,6 +73,31 @@ paths:
                 type: object
       security:
         - bearer
+    post:
+      tags:
+        - posts
+      description: 'Salva um novo post no banco de dados'
+      operationId: 'Spa\Http\Controllers\Api\V1\PostsController::store'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '422':
+          description: 'Erros de validação'
+          $ref: '#components/responses/ErrorValidationResponse'
+        '201':
+          description: 'Post Criado'
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta: { description: 'Response metada', properties: { code: { description: 'Http response code', example: '201' }, message: { description: 'A resposta da requisição', example: 'O post foi criado' } }, type: object }
+                  data: { description: 'Response data', properties: { post: { description: 'O post criado', $ref: '#/components/schemas/Post' } }, type: object }
+                type: object
+      security:
+        - bearer
 components:
   schemas:
     ErrorResponse:
@@ -91,6 +116,10 @@ components:
       type: object
     Post:
       description: 'Define um post salvo no banco de dados'
+      required:
+        - title
+        - text
+        - user_id
       properties:
         id:
           description: 'Post ID'
@@ -117,6 +146,21 @@ components:
           type: string
           format: dateTime
       type: object
+  responses:
+    ErrorValidationResponse:
+      description: 'Define a response contendo os dados de validação de formulários'
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                description: 'Mensagem que informa que há erros de validação'
+              errors:
+                description: 'Define os erros em cada campo'
+                properties:
+                  field_name: { description: 'Nome do campo que foi validado', example: '[''Nome de usuário inválido'']' }
+                type: object
+            type: object
   securitySchemes:
     bearer:
       type: http

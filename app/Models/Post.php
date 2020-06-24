@@ -35,6 +35,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="Post",
  *     description="Define um post salvo no banco de dados",
+ *     required={"title", "text", "user_id"},
  *     @OA\Property(property="id", type="integer", description="Post ID"),
  *     @OA\Property(property="title", type="string", description="Título do post"),
  *     @OA\Property(property="text", type="string", description="Conteúdo do post"),
