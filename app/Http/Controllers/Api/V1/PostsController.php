@@ -2,8 +2,10 @@
 
 namespace Spa\Http\Controllers\Api\V1;
 
+use Auth;
 use Illuminate\Http\Request;
 use Spa\Http\Controllers\Controller;
+use Spa\Repositories\Posts;
 
 /**
  * PostsController
@@ -14,13 +16,25 @@ use Spa\Http\Controllers\Controller;
  */
 class PostsController extends Controller
 {
-    public function __construct()
+    /**
+     * @var Posts
+     */
+    protected $posts;
+
+    public function __construct(Posts $posts)
     {
+        $this->middleware('auth:api');
+        $this->posts = $posts;
     }
 
     public function index()
     {
-        //
+        $user = auth()->user();
+        $posts = $this->posts->getUserPosts($user->id);
+
+        return success([
+            'posts' => $posts
+        ]);
     }
 
     public function create()

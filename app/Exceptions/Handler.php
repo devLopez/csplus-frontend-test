@@ -2,7 +2,11 @@
 
 namespace Spa\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +54,25 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ( $request->ajax() || $request->wantsJson() ) {
+            $exception = $this->prepareException($exception);
+
+            if ( ! $exception instanceof ValidationException ) {
+                $code = ( $exception instanceof HttpException ) ? $exception->getStatusCode() : 500;
+
+                $message = ( $exception instanceof NotFoundHttpException )
+                    ? 'Não foram encontrados registros para a consulta'
+                    : $exception->getMessage();
+
+                return error([], $code, $message);
+            }
+        }
+
         return parent::render($request, $exception);
+    }
+
+    public function unauthenticated($request, AuthenticationException $exception)
+    {
+        return error([], 401, 'Você precisa estar logado para acessar este recurso');
     }
 }

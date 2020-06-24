@@ -405,4 +405,18 @@ abstract class AbstractRepository
 
         return $this;
     }
+
+    public function where($column, $operator = null, $value = null, $boolean = 'and')
+    {
+        $this->model = $this->model->where($column, $operator, $value, $boolean);
+
+        return $this;
+    }
+
+    public function orWhere($column, $operator = null, $value = null)
+    {
+        $this->where($column, $operator = null, $value = null, $boolean = 'or');
+
+        return $this;
+    }
 }
