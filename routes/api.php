@@ -19,6 +19,7 @@ Route::namespace('V1')->as('v1.')->prefix('v1')->group(function()
     Route::prefix('auth')->as('auth.')->group(function()
     {
         Route::post('/', 'AuthController@login')->name('login');
+        Route::post('/logout', 'AuthController@logout')->name('logout');
     });
 
     Route::resource('posts', 'PostsController');

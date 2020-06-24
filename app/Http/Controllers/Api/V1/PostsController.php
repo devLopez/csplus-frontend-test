@@ -106,16 +106,18 @@ class PostsController extends Controller
      *              )
      *          )
      *     ),
+     *     @OA\Response(response="403", ref="#components/responses/Forbidden"),
      *     @OA\Response(response="404", ref="#components/responses/NotFound"),
      *     @OA\Response(response="500", ref="#components/responses/Error")
      * )
      */
     public function show($id)
     {
-        $user = auth()->user();
-
-        $this->posts->pushCriteria(new Where('user_id', $user->id));
         $post = $this->posts->findOrFail($id);
+
+        $response = Gate::inspect('update-post', $post);
+
+        abort_if($response->denied(), 403, 'Você não tem permissão para ver este recurso');
 
         return success([
             'post' => $post
@@ -172,8 +174,33 @@ class PostsController extends Controller
         ], 201, 'O post foi atualizado');
     }
 
+    /**
+     * @OA\Delete(
+     *     tags={"posts"},
+     *     path="/api/v1/posts/{post}",
+     *     description="Apaga um post na base de dados",
+     *     security={"bearer"},
+     *     @OA\Response(response="403", ref="#components/responses/Forbidden"),
+     *     @OA\Response(response="500", ref="#components/responses/Error"),
+     *     @OA\Response(response="201", description="Post Apagado",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="meta", description="Response metada",
+     *                  @OA\Property(property="code", description="Http response code", example="201"),
+     *                  @OA\Property(property="message", description="A resposta da requisição", example="O post foi removido")
+     *              )
+     *          )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
-        //
+        $post = $this->posts->find($id);
+        $response = Gate::inspect('update-post', $post);
+
+        abort_if($response->denied(), 403, 'Você não tem permissão para atualizar este post');
+
+        $this->posts->delete($id);
+
+        return success([], 201, 'O post foi apagado');
     }
 }

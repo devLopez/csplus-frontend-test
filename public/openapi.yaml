@@ -118,6 +118,8 @@ paths:
                 properties:
                   data: { description: 'Response data', properties: { post: { description: 'o post encontrado', $ref: '#/components/schemas/Post' } }, type: object }
                 type: object
+        '403':
+          $ref: '#components/responses/Forbidden'
         '404':
           $ref: '#components/responses/NotFound'
         '500':
@@ -149,6 +151,26 @@ paths:
                 properties:
                   meta: { description: 'Response metada', properties: { code: { description: 'Http response code', example: '201' }, message: { description: 'A resposta da requisição', example: 'O post foi criado' } }, type: object }
                   data: { description: 'Response data', properties: { post: { description: 'O post foi atualizado', $ref: '#/components/schemas/Post' } }, type: object }
+                type: object
+      security:
+        - bearer
+    delete:
+      tags:
+        - posts
+      description: 'Apaga um post na base de dados'
+      operationId: 'Spa\Http\Controllers\Api\V1\PostsController::destroy'
+      responses:
+        '403':
+          $ref: '#components/responses/Forbidden'
+        '500':
+          $ref: '#components/responses/Error'
+        '201':
+          description: 'Post Apagado'
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta: { description: 'Response metada', properties: { code: { description: 'Http response code', example: '201' }, message: { description: 'A resposta da requisição', example: 'O post foi removido' } }, type: object }
                 type: object
       security:
         - bearer
