@@ -20,4 +20,6 @@ Route::namespace('V1')->as('v1.')->prefix('v1')->group(function()
     {
         Route::post('/', 'AuthController@login')->name('login');
     });
+
+    Route::resource('posts', 'PostsController');
 });
