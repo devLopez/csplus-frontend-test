@@ -10,7 +10,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run() : void
     {
-        factory(User::class, 2)->create()->each(function ($user)
+        factory(User::class)->create()->each(function ($user)
         {
             factory(Post::class, 10)->create([
                 'user_id' => $user->id
