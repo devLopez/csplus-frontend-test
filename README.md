@@ -40,9 +40,7 @@ $ php artisan serve
 ```
 
 #### Acessando a documentação
-Para acessar a documentação, basta acessar o endereço definido na *virtualhost* do
-apache (dominio.test ou qualquer outra coisa), ou se estiver utilizando o server
-embutido do PHP, localhost:8000, /swagger para ter acesso à documentação de endpoints
+Para acessar a documentação das rotas, basta acessar http://localhost:8000/swagger para ter acesso à documentação de endpoints
 da API.
 
 Recomendo, em caso de utilização com windows, o servidor Laragon, que foi feito
